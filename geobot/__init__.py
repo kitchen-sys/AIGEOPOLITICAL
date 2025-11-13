@@ -18,6 +18,7 @@ from . import ml
 from . import data_ingestion
 from . import utils
 from . import config
+from . import interface
 
 __all__ = [
     "core",
@@ -29,4 +30,5 @@ __all__ = [
     "data_ingestion",
     "utils",
     "config",
+    "interface",
 ]
