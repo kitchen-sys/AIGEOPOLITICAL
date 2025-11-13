@@ -7,6 +7,7 @@ Support for:
 - News feed ingestion
 - Structured event extraction
 - Event database and temporal normalization
+- Document indexing with full-text and semantic search
 """
 
 from .pdf_reader import PDFReader, PDFProcessor
@@ -19,6 +20,7 @@ from .event_extraction import (
     CausalFeatureExtractor
 )
 from .event_database import EventDatabase, EventStream
+from .document_index import DocumentIndex, DocumentMetadata, DocumentChunk
 
 __all__ = [
     "PDFReader",
@@ -33,4 +35,7 @@ __all__ = [
     "CausalFeatureExtractor",
     "EventDatabase",
     "EventStream",
+    "DocumentIndex",
+    "DocumentMetadata",
+    "DocumentChunk",
 ]
