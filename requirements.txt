@@ -30,8 +30,11 @@ scikit-learn>=1.3.0
 xgboost>=2.0.0
 lightgbm>=4.0.0
 torch>=2.0.0  # For GNNs, VAEs, Transformers
-torch-geometric>=2.3.0  # Graph Neural Networks
 transformers>=4.30.0  # Hugging Face transformers
+
+# Graph Neural Networks (install separately with correct torch version)
+# torch-geometric>=2.3.0
+# Install with: pip install torch-geometric torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-{version}+{cu/cpu}.html
 
 # Monte Carlo and Simulation
 mesa>=2.0.0  # Agent-based modeling
@@ -51,6 +54,7 @@ newspaper3k>=0.2.8  # Article extraction
 trafilatura>=1.6.0  # Web scraping and content extraction
 selenium>=4.15.0  # For dynamic content
 lxml>=4.9.0
+feedparser>=6.0.10  # RSS feed parsing
 
 # Text Processing and NLP
 nltk>=3.8
