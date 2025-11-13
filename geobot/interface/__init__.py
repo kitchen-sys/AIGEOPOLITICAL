@@ -24,6 +24,11 @@ from .report_format import (
     Scenario,
     Indicator
 )
+from .answer_database import (
+    AnswerDatabase,
+    AnswerRecord,
+    AnswerQuality
+)
 
 __all__ = [
     "ModeManager",
@@ -44,4 +49,7 @@ __all__ = [
     "KeyJudgment",
     "Scenario",
     "Indicator",
+    "AnswerDatabase",
+    "AnswerRecord",
+    "AnswerQuality",
 ]

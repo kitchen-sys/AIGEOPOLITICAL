@@ -93,7 +93,9 @@ class AnalystAgent:
         self,
         llm_backend: str = "mistral",
         verbosity: str = "standard",
-        include_uncertainty: bool = True
+        include_uncertainty: bool = True,
+        enable_answer_logging: bool = False,
+        answer_db_path: Optional[str] = None
     ):
         """
         Initialize analyst agent.
@@ -102,20 +104,31 @@ class AnalystAgent:
             llm_backend: LLM to use ("mistral", "gpt-4", "claude-3", "local")
             verbosity: Response detail level ("concise", "standard", "detailed")
             include_uncertainty: Include uncertainty quantification
+            enable_answer_logging: Enable automatic logging to answer database
+            answer_db_path: Path to answer database (default: answer_database.db)
         """
         self.llm_backend = llm_backend
         self.verbosity = verbosity
         self.include_uncertainty = include_uncertainty
+        self.enable_answer_logging = enable_answer_logging
 
         # In production, initialize actual LLM client here
         # self.llm_client = MistralClient(api_key=...)
 
-    def analyze(self, query: str) -> AnalysisResult:
+        # Answer logging
+        self.answer_db = None
+        if enable_answer_logging:
+            from .answer_database import AnswerDatabase
+            self.answer_db = AnswerDatabase(answer_db_path or "answer_database.db")
+
+    def analyze(self, query: str, session_id: str = "", analyst_id: str = "") -> AnalysisResult:
         """
         Analyze a natural language query.
 
         Args:
             query: User's question in natural language
+            session_id: Optional session identifier for tracking
+            analyst_id: Optional analyst identifier
 
         Returns:
             AnalysisResult with narrative + structured analysis
@@ -135,7 +148,7 @@ class AnalystAgent:
         # Step 4: Compute execution time
         execution_time = (datetime.utcnow() - start_time).total_seconds()
 
-        return AnalysisResult(
+        result = AnalysisResult(
             query=query,
             narrative_answer=narrative,
             structured_analysis=structured,
@@ -145,6 +158,31 @@ class AnalystAgent:
             execution_time=execution_time,
             warnings=analysis_data.get('warnings', [])
         )
+
+        # Log to answer database if enabled
+        if self.enable_answer_logging and self.answer_db:
+            try:
+                self.answer_db.log_answer(
+                    query=query,
+                    query_intent={
+                        'analysis_type': intent.analysis_type.value,
+                        'entities': intent.entities,
+                        'time_horizon': intent.time_horizon
+                    },
+                    answer_narrative=narrative,
+                    answer_structured=structured,
+                    model_used=self.llm_backend,
+                    modules_invoked=[m.value for m in intent.modules_to_call],
+                    processing_time_seconds=execution_time,
+                    session_id=session_id,
+                    analyst_id=analyst_id,
+                    auto_rate=True  # Automatic quality rating
+                )
+            except Exception as e:
+                # Don't fail analysis if logging fails
+                print(f"Warning: Failed to log answer to database: {e}")
+
+        return result
 
     def _parse_query_intent(self, query: str) -> QueryIntent:
         """
