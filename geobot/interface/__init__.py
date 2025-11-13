@@ -13,6 +13,17 @@ from .mode_manager import ModeManager, OperationalMode
 from .analyst_agent import AnalystAgent, AnalysisResult
 from .watch_daemon import WatchDaemon, Alert, AlertLevel
 from .replay import ReplayAnalyzer, HistoricalSnapshot
+from .report_format import (
+    IntelligenceReport,
+    ReportBuilder,
+    Classification,
+    ConfidenceLevel,
+    Likelihood,
+    ReportType,
+    KeyJudgment,
+    Scenario,
+    Indicator
+)
 
 __all__ = [
     "ModeManager",
@@ -24,4 +35,13 @@ __all__ = [
     "AlertLevel",
     "ReplayAnalyzer",
     "HistoricalSnapshot",
+    "IntelligenceReport",
+    "ReportBuilder",
+    "Classification",
+    "ConfidenceLevel",
+    "Likelihood",
+    "ReportType",
+    "KeyJudgment",
+    "Scenario",
+    "Indicator",
 ]
