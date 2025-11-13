@@ -48,6 +48,25 @@ Advanced intervention and counterfactual analysis:
 python 03_intervention_simulation.py
 ```
 
+### 04_advanced_features.py
+Research-grade advanced mathematical features:
+- Sequential Monte Carlo (particle filtering) for nonlinear state estimation
+- Stochastic Differential Equations (Euler-Maruyama, Milstein, Jump-Diffusion)
+- Gradient-based Optimal Transport with Kantorovich duality
+- Entropic OT with Sinkhorn algorithm
+- Structured event extraction from intelligence text
+- Event database with temporal normalization
+
+**Run it:**
+```bash
+python 04_advanced_features.py
+```
+
+**Note:** Some features require additional dependencies:
+```bash
+pip install torch  # For advanced features
+```
+
 ## Additional Resources
 
 ### Creating Custom Scenarios
