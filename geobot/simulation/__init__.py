@@ -13,6 +13,9 @@ from .sde_solver import (
     ornstein_uhlenbeck_process
 )
 
+# Hawkes processes (wrapper for timeseries.point_processes)
+from . import hawkes
+
 __all__ = [
     "MonteCarloEngine",
     "ShockSimulator",
@@ -24,4 +27,5 @@ __all__ = [
     "JumpDiffusionProcess",
     "GeopoliticalSDE",
     "ornstein_uhlenbeck_process",
+    "hawkes",
 ]

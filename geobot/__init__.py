@@ -23,6 +23,10 @@ from . import utils
 from . import config
 from . import analysis
 
+# New modules in v2.0
+from . import bayes
+from . import causal
+
 __all__ = [
     "core",
     "models",
@@ -34,4 +38,6 @@ __all__ = [
     "utils",
     "config",
     "analysis",
+    "bayes",
+    "causal",
 ]
