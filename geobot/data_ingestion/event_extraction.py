@@ -25,6 +25,16 @@ from dataclasses import dataclass, field
 from enum import Enum
 import json
 
+# Optional numpy import for advanced features
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
+    # Create a minimal np-like object for type hints
+    class np:
+        ndarray = type('ndarray', (), {})
+
 
 class EventType(Enum):
     """Event taxonomy."""
