@@ -443,7 +443,7 @@ AIGEOPOLITICAL/
 │   │
 │   ├── data_ingestion/              # Data processing
 │   │   ├── pdf_reader.py            # PDF intelligence extraction
-│   │   ├── web_scraper.py           # Web scraping
+│   │   ├── web_scraper.py           # Web scraping (FIXED)
 │   │   ├── event_extraction.py      # NLP-based event structuring
 │   │   └── event_database.py        # Event storage and querying
 │   │
@@ -452,6 +452,12 @@ AIGEOPOLITICAL/
 │   │   ├── lenses.py                # Four analytical lenses (A-D)
 │   │   ├── engine.py                # Analytical engine
 │   │   └── formatter.py             # Output formatting
+│   │
+│   ├── bayes/                       # Bayesian Forecasting (NEW v2.0)
+│   │   └── forecasting.py           # Belief updating, priors, evidence integration
+│   │
+│   ├── causal/                      # Structural Causal Models (NEW v2.0)
+│   │   └── structural_model.py      # SCMs, interventions, counterfactuals
 │   │
 │   ├── utils/                       # Utilities
 │   │   ├── data_processing.py       # Data preprocessing
@@ -466,7 +472,9 @@ AIGEOPOLITICAL/
 │   ├── 03_intervention_simulation.py # Do-calculus and counterfactuals
 │   ├── 04_advanced_features.py     # Particle filters, VI, SDEs, GNNs
 │   ├── 05_complete_framework.py    # VAR, Hawkes, quasi-experimental
-│   └── 06_geobot2_analytical_framework.py # GeoBot 2.0 analytical framework (NEW)
+│   ├── 06_geobot2_analytical_framework.py # GeoBot 2.0 framework (NEW)
+│   ├── taiwan_situation_room.py    # Taiwan Strait scenario (NEW v2.0)
+│   └── EXAMPLES_STATUS.md           # Examples validation report
 │
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # This file
