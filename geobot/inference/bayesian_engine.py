@@ -201,8 +201,15 @@ class BayesianEngine:
         # Create grid
         n_grid = 1000
         if hasattr(prior.distribution, 'support'):
-            support = prior.distribution.support()
-            grid = np.linspace(support[0], support[1], n_grid)
+            # Pass parameters to support() method
+            try:
+                support = prior.distribution.support(**prior.parameters)
+                grid = np.linspace(support[0], support[1], n_grid)
+            except:
+                # Fallback if support() fails
+                mean = prior.parameters.get('loc', 0)
+                std = prior.parameters.get('scale', 1)
+                grid = np.linspace(max(0, mean - 4*std), min(1, mean + 4*std), n_grid)
         else:
             # Default grid
             mean = prior.parameters.get('loc', 0)
