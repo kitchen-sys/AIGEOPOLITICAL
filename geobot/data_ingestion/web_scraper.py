@@ -12,7 +12,7 @@ Supports multiple extraction methods for robustness.
 """
 
 import requests
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime
 from urllib.parse import urlparse
 import re

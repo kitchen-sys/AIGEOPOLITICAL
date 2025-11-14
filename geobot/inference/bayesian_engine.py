@@ -198,13 +198,30 @@ class BayesianEngine:
         """
         prior = self.priors[variable]
 
-        # Create grid
+        # Create grid based on distribution type
         n_grid = 1000
-        if hasattr(prior.distribution, 'support'):
-            support = prior.distribution.support()
-            grid = np.linspace(support[0], support[1], n_grid)
+
+        # Check distribution type by name
+        dist_name = prior.distribution.name if hasattr(prior.distribution, 'name') else 'unknown'
+
+        if dist_name == 'beta':
+            # Beta distribution always has support [0, 1]
+            grid = np.linspace(0, 1, n_grid)
+        elif dist_name == 'gamma':
+            # Gamma distribution has support [0, inf)
+            # Use reasonable upper bound based on parameters
+            shape = prior.parameters.get('a', 1)
+            scale = prior.parameters.get('scale', 1)
+            mean = shape * scale
+            std = np.sqrt(shape) * scale
+            grid = np.linspace(0, mean + 4*std, n_grid)
+        elif dist_name == 'uniform':
+            # Uniform distribution uses loc and scale
+            loc = prior.parameters.get('loc', 0)
+            scale = prior.parameters.get('scale', 1)
+            grid = np.linspace(loc, loc + scale, n_grid)
         else:
-            # Default grid
+            # Default for normal and other distributions
             mean = prior.parameters.get('loc', 0)
             std = prior.parameters.get('scale', 1)
             grid = np.linspace(mean - 4*std, mean + 4*std, n_grid)
@@ -428,6 +445,7 @@ class BeliefUpdater:
         """
         if belief_type == 'continuous':
             distribution = stats.norm
+            parameters = {'loc': prior_mean, 'scale': prior_std}
         elif belief_type == 'probability':
             # Use beta distribution for probabilities
             # Convert mean/std to alpha/beta parameters
@@ -436,15 +454,16 @@ class BeliefUpdater:
             alpha = mean * (mean * (1 - mean) / var - 1)
             beta = (1 - mean) * (mean * (1 - mean) / var - 1)
             distribution = stats.beta
-            prior_mean = alpha
-            prior_std = beta
+            # Beta uses 'a' and 'b' parameters, not 'loc' and 'scale'
+            parameters = {'a': alpha, 'b': beta}
         else:
             distribution = stats.norm
+            parameters = {'loc': prior_mean, 'scale': prior_std}
 
         prior = Prior(
             name=name,
             distribution=distribution,
-            parameters={'loc': prior_mean, 'scale': prior_std}
+            parameters=parameters
         )
 
         self.engine.set_prior(prior)

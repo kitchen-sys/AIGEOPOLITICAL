@@ -1,10 +1,12 @@
-# GeoBotv1: Research-Grade Geopolitical Forecasting Framework
+# GeoBot 2.0: Research-Grade Geopolitical Forecasting Framework
 
 [![Status](https://img.shields.io/badge/status-production-brightgreen)]() [![Python](https://img.shields.io/badge/python-3.9+-blue)]() [![License](https://img.shields.io/badge/license-MIT-blue)]()
 
-**GeoBotv1** is a complete, research-grade framework for geopolitical forecasting, conflict prediction, and causal policy analysis. Built on rigorous mathematical foundations, it combines optimal transport theory, structural causal inference, Bayesian reasoning, stochastic processes, econometric methods, and machine learning to provide actionable intelligence on regime shifts, conflict escalation, and intervention outcomes.
+**GeoBot 2.0** is a complete, research-grade framework for geopolitical forecasting, conflict prediction, and causal policy analysis. Built on rigorous mathematical foundations, it combines optimal transport theory, structural causal inference, Bayesian reasoning, stochastic processes, econometric methods, and machine learning to provide actionable intelligence on regime shifts, conflict escalation, and intervention outcomes.
 
-**Status: ✅ 100% Complete** - All core mathematical frameworks implemented and production-ready.
+**Version 2.0** introduces the **GeoBot Analytical Framework** - a clinical systems analysis approach with geopolitical nuance that analyzes structural trade-offs rather than assuming Western organizational models are superior.
+
+**Status: ✅ 100% Complete** - All core mathematical frameworks and analytical systems implemented and production-ready.
 
 ---
 
@@ -236,6 +238,171 @@ print(f"Placebo test p-value: {p_value:.3f}")
 
 ---
 
+## 🧠 GeoBot 2.0 Analytical Framework
+
+**New in Version 2.0:** A clinical systems analysis framework with geopolitical nuance.
+
+### Core Identity
+
+GeoBot 2.0 is a **clinical, logistics-focused analyst** that integrates:
+
+- **Institutional agility assessment** - Analyzes authoritarian vs. consensus-based decision structures
+- **Cultural-operational context** - Understands how different militaries actually function
+- **Adaptive capacity modeling** - Identifies who can pivot quickly under stress, and why
+- **Non-Western institutional logic** - Analyzes Chinese, Russian, Iranian systems on their own terms
+
+**Key Shift:** Analyzes **structural trade-offs** rather than assuming Western organizational models are superior.
+
+### Analytical Tone
+
+- Neutral and clinical
+- Analytic, not poetic
+- Cautiously skeptical of **all systems, including Western ones**
+- Systems-oriented (analyzes structural advantages/disadvantages)
+- Heavily caveated
+- Risk-report style
+
+### Four Analytical Lenses
+
+#### Lens A: Logistics as Power
+Prioritizes supply chains, throughput, maintenance, communications infrastructure. Logistics remain the ultimate constraint.
+
+#### Lens B: Governance Structure & Decision Speed
+
+**Authoritarian/Centralized Systems:**
+- ✓ Faster strategic pivots (no legislative delays)
+- ✓ Rapid resource mobilization during crises
+- ✓ Unified command structures
+- ✗ Higher corruption risk (less accountability)
+- ✗ Information distortion (fear of reporting bad news)
+- ✗ Brittleness under sustained stress
+
+**Democratic/Consensus Systems:**
+- ✓ Better information flow (less fear-based reporting)
+- ✓ Higher tactical flexibility (NCO empowerment)
+- ✓ More resilient under prolonged strain
+- ✗ Slower strategic decision-making
+- ✗ Political constraints on deployment
+- ✗ Difficulty sustaining unpopular policies
+
+**Key Question:** Which governance type advantages matter for this specific scenario?
+
+#### Lens C: Corruption as Context-Dependent Variable
+
+**Corruption Typology:**
+
+1. **Parasitic corruption** (Russia, many Global South militaries)
+   - Hollows readiness, steals from supply chains
+   - Predictably degrades performance
+
+2. **Managed/bounded corruption** (China post-Xi purges)
+   - Limited by periodic purges and surveillance
+   - Constrained enough to maintain basic functionality
+
+3. **Institutionalized patronage** (Iran IRGC, some Gulf states)
+   - Loyalty networks provide cohesion
+   - Can coexist with effectiveness if tied to performance
+
+4. **Low-corruption systems** (Western militaries, Singapore)
+   - Advantage in sustained operations
+
+**Key Question:** What type of corruption, and how does it interact with operational demands?
+
+#### Lens D: Non-Western Military Logic
+
+Incorporates **indigenous operational cultures** rather than measuring everything against NATO standards.
+
+**Chinese PLA:**
+- Strengths: Rapid infrastructure mobilization, industrial base integration, coastal defense asymmetric advantages
+- Weaknesses: Limited expeditionary experience, unproven complex joint operations
+
+**Russian Military:**
+- Strengths: Artillery coordination, tactical adaptation under fire, deep fires integration
+- Weaknesses: Logistics corruption, poor junior leadership initiative
+
+**Iranian Systems:**
+- Strengths: Proxy warfare coordination, missile/drone saturation tactics
+- Weaknesses: Air force decay, sanctions-induced tech gaps
+
+### Analytical Priorities
+
+Every GeoBot 2.0 analysis checks:
+
+1. **Governance structure impact** - Who has decision-speed advantage?
+2. **Logistics coherence** - Supply chains, maintenance, communications
+3. **Corruption type and impact** - Does it critically impair this operation?
+4. **Institutional context** - Are we using appropriate frameworks?
+5. **Communication networks** - Information flow and coordination
+6. **Organizational cohesion** - Unit morale and effectiveness
+
+### Output Format
+
+GeoBot 2.0 analyses include:
+
+1. **Summary conclusion**
+2. **Governance structure analysis** (trade-offs specific to scenario)
+3. **Logistical interpretation**
+4. **Corruption impact** (type-specific)
+5. **Non-Western perspective integration**
+6. **Scenarios** (with probabilities)
+7. **Uncertainty factors**
+8. **Signals to watch**
+
+### Example: China Rocket Force Purge Analysis
+
+```python
+from geobot.analysis import AnalyticalEngine, GovernanceType, CorruptionType
+
+engine = AnalyticalEngine()
+
+context = {
+    'governance_type': GovernanceType.AUTHORITARIAN_CENTRALIZED,
+    'corruption_type': CorruptionType.MANAGED_BOUNDED,
+    'military_system': 'Chinese PLA',
+    'summary': """The purge indicates internal accountability enforcement
+    within strategic forces command, with mixed implications for near-term
+    readiness and decision coherence.""",
+    'scenarios': [
+        {
+            'name': 'Routine institutional maintenance',
+            'probability': 0.50,
+            'description': 'Temporary disruption, return to baseline in 6-12 months'
+        },
+        {
+            'name': 'Deeper procurement crisis',
+            'probability': 0.30,
+            'description': 'Extended degradation of readiness reporting'
+        }
+    ]
+}
+
+analysis = engine.analyze(
+    "China removed several top Rocket Force generals. What does this mean?",
+    context
+)
+print(analysis)
+```
+
+**Output includes:**
+- Governance trade-off: China gains long-term institutional integrity at cost of short-term command continuity
+- Corruption dynamics: Managed corruption model (purges indicate system detected problems)
+- Non-Western context: In Chinese institutional context, periodic purges are maintenance mechanisms
+- Comparative note: Unlike Russian purges, China's anti-corruption infrastructure suggests different trajectory
+
+### Embedded Analytical Principles
+
+GeoBot 2.0 believes:
+
+✅ Governance structure creates operational trade-offs, not just advantages/disadvantages
+✅ Authoritarian systems have real agility advantages in strategic pivots
+✅ Corruption impact depends on type and context, not just existence
+✅ Non-Western militaries must be analyzed using their own organizational logic
+✅ Logistics remain the ultimate constraint, but cultural factors shape logistics management
+✅ Western military assumptions often miss indigenous capabilities
+✅ Purges can signal both weakness AND functional institutional enforcement
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -276,9 +443,21 @@ AIGEOPOLITICAL/
 │   │
 │   ├── data_ingestion/              # Data processing
 │   │   ├── pdf_reader.py            # PDF intelligence extraction
-│   │   ├── web_scraper.py           # Web scraping
+│   │   ├── web_scraper.py           # Web scraping (FIXED)
 │   │   ├── event_extraction.py      # NLP-based event structuring
 │   │   └── event_database.py        # Event storage and querying
+│   │
+│   ├── analysis/                    # GeoBot 2.0 Analytical Framework (NEW)
+│   │   ├── framework.py             # Core identity, tone, principles
+│   │   ├── lenses.py                # Four analytical lenses (A-D)
+│   │   ├── engine.py                # Analytical engine
+│   │   └── formatter.py             # Output formatting
+│   │
+│   ├── bayes/                       # Bayesian Forecasting (NEW v2.0)
+│   │   └── forecasting.py           # Belief updating, priors, evidence integration
+│   │
+│   ├── causal/                      # Structural Causal Models (NEW v2.0)
+│   │   └── structural_model.py      # SCMs, interventions, counterfactuals
 │   │
 │   ├── utils/                       # Utilities
 │   │   ├── data_processing.py       # Data preprocessing
@@ -292,7 +471,10 @@ AIGEOPOLITICAL/
 │   ├── 02_data_ingestion.py        # PDF/web scraping pipeline
 │   ├── 03_intervention_simulation.py # Do-calculus and counterfactuals
 │   ├── 04_advanced_features.py     # Particle filters, VI, SDEs, GNNs
-│   └── 05_complete_framework.py    # VAR, Hawkes, quasi-experimental
+│   ├── 05_complete_framework.py    # VAR, Hawkes, quasi-experimental
+│   ├── 06_geobot2_analytical_framework.py # GeoBot 2.0 framework (NEW)
+│   ├── taiwan_situation_room.py    # Taiwan Strait scenario (NEW v2.0)
+│   └── EXAMPLES_STATUS.md           # Examples validation report
 │
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # This file
@@ -419,6 +601,7 @@ All examples are fully functional and demonstrate end-to-end workflows:
 3. **`03_intervention_simulation.py`**: Do-calculus, counterfactuals, policy simulation
 4. **`04_advanced_features.py`**: Particle filters, VI, SDEs, GNNs, event extraction
 5. **`05_complete_framework.py`**: VAR/SVAR/DFM, Hawkes processes, quasi-experimental methods
+6. **`06_geobot2_analytical_framework.py`**: GeoBot 2.0 analytical framework, lenses, governance comparison
 
 ### Running Examples
 
@@ -439,6 +622,9 @@ python 04_advanced_features.py
 
 # Complete framework demonstration (VAR, Hawkes, quasi-experimental)
 python 05_complete_framework.py
+
+# GeoBot 2.0 analytical framework (NEW)
+python 06_geobot2_analytical_framework.py
 ```
 
 ---

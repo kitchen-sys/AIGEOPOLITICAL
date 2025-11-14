@@ -17,7 +17,14 @@ import sqlite3
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple, Any
 from pathlib import Path
-import pandas as pd
+
+# Optional pandas import for DataFrame export
+try:
+    import pandas as pd
+    HAS_PANDAS = True
+except ImportError:
+    HAS_PANDAS = False
+    pd = None
 
 from .event_extraction import GeopoliticalEvent, EventType, TemporalNormalizer
 
@@ -341,7 +348,7 @@ class EventDatabase:
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None,
         event_types: Optional[List[EventType]] = None
-    ) -> pd.DataFrame:
+    ):
         """
         Aggregate events by time period.
 
@@ -361,6 +368,9 @@ class EventDatabase:
         pd.DataFrame
             Time series of event counts
         """
+        if not HAS_PANDAS:
+            raise ImportError("pandas is required for aggregate_by_time. Install with: pip install pandas")
+
         events = self.query_events(
             start_time=start_time,
             end_time=end_time,
@@ -406,7 +416,7 @@ class EventDatabase:
         start_time: datetime,
         end_time: datetime,
         granularity: str = 'day'
-    ) -> Dict[str, pd.DataFrame]:
+    ):
         """
         Export to panel data format.
 
@@ -426,6 +436,9 @@ class EventDatabase:
         dict
             Panel data {actor: DataFrame}
         """
+        if not HAS_PANDAS:
+            raise ImportError("pandas is required for export_to_panel_data. Install with: pip install pandas")
+
         from .event_extraction import CausalFeatureExtractor
 
         # Get events for each actor
