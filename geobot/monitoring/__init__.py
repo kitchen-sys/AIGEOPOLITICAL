@@ -6,5 +6,6 @@ automated analysis using GeoBot 2.0 analytical framework.
 """
 
 from . import ticker
+from . import forecast_logger
 
-__all__ = ['ticker']
+__all__ = ['ticker', 'forecast_logger']

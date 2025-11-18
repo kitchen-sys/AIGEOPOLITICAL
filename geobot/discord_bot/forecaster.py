@@ -103,6 +103,16 @@ class ConflictForecaster:
             'escalation': {'alpha': 4.5, 'beta': 15.5},  # ~22.5% base rate
             'regime_change': {'alpha': 1.0, 'beta': 19.0},  # ~5% base rate
             'timeframe': '12 months'
+        },
+        'venezuela': {
+            'escalation': {'alpha': 3.5, 'beta': 16.5},  # ~17.5% base rate
+            'regime_change': {'alpha': 6.0, 'beta': 14.0},  # ~30% base rate (higher due to internal instability)
+            'timeframe': '12 months'
+        },
+        'usa_venezuela': {
+            'escalation': {'alpha': 2.5, 'beta': 17.5},  # ~12.5% base rate (US intervention)
+            'regime_change': {'alpha': 6.5, 'beta': 13.5},  # ~32.5% base rate (regime change focus)
+            'timeframe': '12 months'
         }
     }
 
@@ -142,7 +152,12 @@ class ConflictForecaster:
             'gaza': 'israel_palestine',
             'west bank': 'israel_palestine',
             'kashmir': 'kashmir',
-            'india pakistan': 'kashmir'
+            'india pakistan': 'kashmir',
+            'usa venezuela': 'usa_venezuela',
+            'us venezuela': 'usa_venezuela',
+            'america venezuela': 'usa_venezuela',
+            'venezuela crisis': 'venezuela',
+            'maduro': 'venezuela'
         }
 
         for variant, canonical in mappings.items():

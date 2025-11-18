@@ -9,6 +9,7 @@ from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
 import re
+import os
 
 try:
     import feedparser
@@ -85,7 +86,7 @@ class NewsArticle:
             'China', 'Russia', 'United States', 'Iran', 'North Korea',
             'Taiwan', 'Ukraine', 'Israel', 'Palestine', 'Syria',
             'Afghanistan', 'Iraq', 'Saudi Arabia', 'Turkey', 'India',
-            'Pakistan', 'Japan', 'South Korea', 'NATO', 'EU'
+            'Pakistan', 'Japan', 'South Korea', 'Venezuela', 'NATO', 'EU'
         ]
 
         text = self.title + ' ' + self.summary
@@ -105,6 +106,7 @@ class RSSFeedScraper:
     Supports:
     - Reuters (multiple topic feeds)
     - AP News (top news and world news)
+    - The Guardian (via API)
     """
 
     # Reuters RSS Feeds
@@ -122,8 +124,18 @@ class RSSFeedScraper:
         'politics': 'https://feeds.apnews.com/rss/politics',
     }
 
-    def __init__(self):
-        """Initialize RSS scraper."""
+    # The Guardian API
+    GUARDIAN_API_URL = 'https://content.guardianapis.com/search'
+
+    def __init__(self, guardian_api_key: Optional[str] = None):
+        """
+        Initialize RSS scraper.
+
+        Parameters
+        ----------
+        guardian_api_key : Optional[str]
+            The Guardian API key (or set GUARDIAN_API_KEY env var)
+        """
         if not HAS_FEEDPARSER:
             raise ImportError(
                 "feedparser is required for RSS scraping. "
@@ -134,6 +146,11 @@ class RSSFeedScraper:
                 "requests is required for RSS scraping. "
                 "Install with: pip install requests"
             )
+
+        # Get Guardian API key from args or environment
+        self.guardian_api_key = guardian_api_key or os.getenv('GUARDIAN_API_KEY')
+        if self.guardian_api_key:
+            print(f"The Guardian API: Enabled")
 
     def scrape_feed(self, url: str, source: str) -> List[NewsArticle]:
         """
@@ -224,6 +241,71 @@ class RSSFeedScraper:
 
         return all_articles
 
+    def scrape_guardian(self, query: str = 'world', page_size: int = 20) -> List[NewsArticle]:
+        """
+        Scrape The Guardian via API.
+
+        Parameters
+        ----------
+        query : str
+            Search query or section (default: 'world')
+        page_size : int
+            Number of articles to retrieve (default: 20, max: 50)
+
+        Returns
+        -------
+        List[NewsArticle]
+            Articles from The Guardian
+        """
+        if not self.guardian_api_key:
+            print("Warning: The Guardian API key not set. Skipping Guardian scraping.")
+            return []
+
+        try:
+            params = {
+                'api-key': self.guardian_api_key,
+                'q': query,
+                'page-size': min(page_size, 50),
+                'show-fields': 'headline,trailText,webPublicationDate',
+                'show-tags': 'keyword',
+                'order-by': 'newest'
+            }
+
+            response = requests.get(self.GUARDIAN_API_URL, params=params, timeout=10)
+            response.raise_for_status()
+
+            data = response.json()
+            articles = []
+
+            if 'response' in data and 'results' in data['response']:
+                for item in data['response']['results']:
+                    # Extract fields
+                    title = item.get('webTitle', '')
+                    link = item.get('webUrl', '')
+                    summary = item.get('fields', {}).get('trailText', '')
+                    published = item.get('webPublicationDate', '')
+
+                    # Extract tags
+                    tags = []
+                    if 'tags' in item:
+                        tags = [tag.get('webTitle', '') for tag in item['tags']]
+
+                    article = NewsArticle(
+                        title=title,
+                        link=link,
+                        summary=summary,
+                        published=published,
+                        source="The Guardian",
+                        tags=tags
+                    )
+                    articles.append(article)
+
+            return articles
+
+        except Exception as e:
+            print(f"Error scraping The Guardian: {e}")
+            return []
+
     def scrape_all(self, geopolitical_only: bool = True) -> List[NewsArticle]:
         """
         Scrape all configured RSS feeds.
@@ -245,6 +327,10 @@ class RSSFeedScraper:
 
         # Scrape AP News
         all_articles.extend(self.scrape_ap_news())
+
+        # Scrape The Guardian (if API key available)
+        if self.guardian_api_key:
+            all_articles.extend(self.scrape_guardian())
 
         # Filter if needed
         if geopolitical_only:

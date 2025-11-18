@@ -41,6 +41,13 @@ try:
 except ImportError:
     HAS_FORECASTER = False
 
+try:
+    from ..monitoring.forecast_logger import get_logger
+    HAS_LOGGER = True
+except ImportError:
+    HAS_LOGGER = False
+    get_logger = None
+
 
 class GeoBotDiscord(commands.Bot):
     """
@@ -68,6 +75,7 @@ class GeoBotDiscord(commands.Bot):
         self.scraper = RSSFeedScraper() if HAS_RSS else None
         self.engine = AnalyticalEngine() if HAS_ANALYSIS else None
         self.forecaster = ConflictForecaster() if HAS_FORECASTER else None
+        self.logger = get_logger() if HAS_LOGGER else None
 
         # Track seen articles for ticker
         self.seen_articles = set()
@@ -107,6 +115,24 @@ class GeoBotDiscord(commands.Bot):
                     conflict,
                     context_text=" ".join(context_articles) if context_articles else None
                 )
+
+                # Log forecast to database for drift tracking
+                if self.logger:
+                    news_context = []
+                    if self.scraper:
+                        articles = self.scraper.scrape_all(geopolitical_only=True)
+                        conflict_lower = conflict.lower()
+                        relevant_articles = [a for a in articles if conflict_lower in (a.title + a.summary).lower()]
+                        news_context = [
+                            {
+                                'title': a.title,
+                                'source': a.source,
+                                'link': a.link,
+                                'summary': a.summary[:200]
+                            }
+                            for a in relevant_articles[:10]
+                        ]
+                    self.logger.log_forecast(forecast, news_context)
 
                 # Create embed
                 embed = discord.Embed(
