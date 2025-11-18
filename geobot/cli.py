@@ -51,6 +51,12 @@ try:
 except ImportError:
     HAS_MONITORING = False
 
+try:
+    from geobot.discord_bot.bot import run_discord_bot
+    HAS_DISCORD = True
+except ImportError:
+    HAS_DISCORD = False
+
 
 def check_dependencies():
     """Check if required dependencies are available."""
@@ -66,6 +72,8 @@ def check_dependencies():
         missing.append("causal (structural causal models)")
     if not HAS_MONITORING:
         missing.append("monitoring (RSS ticker) - install: pip install feedparser requests")
+    if not HAS_DISCORD:
+        missing.append("discord (Discord bot) - install: pip install discord.py")
 
     if missing:
         print("Warning: Some modules are not available:")
@@ -326,6 +334,72 @@ def cmd_monitor(args):
     return 0
 
 
+def cmd_discord(args):
+    """Run Discord bot for geopolitical intelligence."""
+    if not HAS_DISCORD:
+        print("Error: Discord bot module not available")
+        print("Install with: pip install discord.py")
+        return 1
+
+    print("=" * 80)
+    print("GeoBot Discord Bot")
+    print("=" * 80)
+    print()
+
+    # Get token from args or environment
+    import os
+    token = args.token or os.getenv('DISCORD_BOT_TOKEN')
+
+    if not token:
+        print("Error: Discord bot token required")
+        print()
+        print("Provide token via:")
+        print("  1. Command line: geobot discord --token YOUR_TOKEN")
+        print("  2. Environment: export DISCORD_BOT_TOKEN='YOUR_TOKEN'")
+        print()
+        print("To create a bot:")
+        print("  1. Go to https://discord.com/developers/applications")
+        print("  2. Create New Application")
+        print("  3. Go to Bot section")
+        print("  4. Copy token")
+        print("  5. Enable MESSAGE CONTENT INTENT")
+        return 1
+
+    # Get ticker channel ID
+    ticker_channel = args.ticker_channel
+    if ticker_channel:
+        try:
+            ticker_channel = int(ticker_channel)
+        except ValueError:
+            print(f"Error: Invalid channel ID: {ticker_channel}")
+            return 1
+
+    print("Configuration:")
+    print(f"  Token: {'*' * 20 + token[-4:]}")
+    print(f"  Ticker Channel: {ticker_channel or 'Not configured'}")
+    print(f"  Auto-updates: {'Every 5 minutes' if ticker_channel else 'Disabled'}")
+    print()
+    print("Commands:")
+    print("  /scan <conflict> - Analyze conflict escalation")
+    print("  /compare <nation1> <nation2> - Compare nations")
+    print("  /ask <question> - Ask geopolitical questions")
+    print("  /status - Check bot status")
+    print()
+    print("Starting bot...")
+    print("=" * 80)
+    print()
+
+    try:
+        run_discord_bot(token, ticker_channel)
+    except KeyboardInterrupt:
+        print("\n\nBot stopped by user")
+    except Exception as e:
+        print(f"\nError running bot: {e}")
+        return 1
+
+    return 0
+
+
 def cmd_version(args):
     """Display version information."""
     try:
@@ -341,6 +415,7 @@ def cmd_version(args):
     print(f"  Belief Updating: {'✓' if HAS_INFERENCE else '✗'}")
     print(f"  Causal Models: {'✓' if HAS_CAUSAL else '✗'}")
     print(f"  Real-Time Monitoring: {'✓' if HAS_MONITORING else '✗'}")
+    print(f"  Discord Bot: {'✓' if HAS_DISCORD else '✗'}")
 
     return 0
 
@@ -442,6 +517,21 @@ def main():
         help='Run single update and exit (test mode)'
     )
     monitor_parser.set_defaults(func=cmd_monitor)
+
+    # Discord bot command
+    discord_parser = subparsers.add_parser(
+        'discord',
+        help='Run Discord bot for real-time geopolitical intelligence'
+    )
+    discord_parser.add_argument(
+        '--token',
+        help='Discord bot token (or set DISCORD_BOT_TOKEN env var)'
+    )
+    discord_parser.add_argument(
+        '--ticker-channel',
+        help='Discord channel ID for auto-posting ticker updates'
+    )
+    discord_parser.set_defaults(func=cmd_discord)
 
     # Version command
     version_parser = subparsers.add_parser(
