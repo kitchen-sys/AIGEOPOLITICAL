@@ -26,6 +26,7 @@ from . import analysis
 # New modules in v2.0
 from . import bayes
 from . import causal
+from . import monitoring
 
 __all__ = [
     "core",
@@ -40,4 +41,5 @@ __all__ = [
     "analysis",
     "bayes",
     "causal",
+    "monitoring",
 ]

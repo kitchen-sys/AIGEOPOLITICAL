@@ -44,6 +44,13 @@ try:
 except ImportError:
     HAS_CAUSAL = False
 
+try:
+    from geobot.monitoring.ticker import GeopoliticalTicker, start_ticker
+    from geobot.data_ingestion.rss_scraper import RSSFeedScraper
+    HAS_MONITORING = True
+except ImportError:
+    HAS_MONITORING = False
+
 
 def check_dependencies():
     """Check if required dependencies are available."""
@@ -57,6 +64,8 @@ def check_dependencies():
         missing.append("inference (belief updating)")
     if not HAS_CAUSAL:
         missing.append("causal (structural causal models)")
+    if not HAS_MONITORING:
+        missing.append("monitoring (RSS ticker) - install: pip install feedparser requests")
 
     if missing:
         print("Warning: Some modules are not available:")
@@ -274,6 +283,49 @@ def cmd_intervene(args):
     return 0
 
 
+def cmd_monitor(args):
+    """Run real-time geopolitical intelligence ticker."""
+    if not HAS_MONITORING:
+        print("Error: Monitoring module not available")
+        print("Install with: pip install feedparser requests")
+        return 1
+
+    print("=" * 80)
+    print("Real-Time Geopolitical Intelligence Ticker")
+    print("=" * 80)
+    print()
+
+    # Test mode - single update
+    if args.test:
+        print("Running single update (test mode)...")
+        print()
+        ticker = GeopoliticalTicker(
+            update_interval_minutes=args.interval,
+            output_dir=Path(args.output) if args.output else None,
+            use_ai_analysis=not args.no_ai
+        )
+        ticker.run_once()
+        return 0
+
+    # Continuous monitoring mode
+    print(f"Starting continuous monitoring...")
+    print(f"Update interval: {args.interval} minutes")
+    print(f"AI Analysis: {'Disabled' if args.no_ai else 'Enabled'}")
+    if args.output:
+        print(f"Output directory: {args.output}")
+    print()
+    print("Press Ctrl+C to stop")
+    print()
+
+    start_ticker(
+        interval_minutes=args.interval,
+        output_dir=args.output,
+        use_ai=not args.no_ai
+    )
+
+    return 0
+
+
 def cmd_version(args):
     """Display version information."""
     try:
@@ -288,6 +340,7 @@ def cmd_version(args):
     print(f"  Bayesian Forecasting: {'✓' if HAS_BAYES else '✗'}")
     print(f"  Belief Updating: {'✓' if HAS_INFERENCE else '✗'}")
     print(f"  Causal Models: {'✓' if HAS_CAUSAL else '✗'}")
+    print(f"  Real-Time Monitoring: {'✓' if HAS_MONITORING else '✗'}")
 
     return 0
 
@@ -362,6 +415,33 @@ def main():
         help='Intervention to apply (format: variable=value)'
     )
     intervene_parser.set_defaults(func=cmd_intervene)
+
+    # Monitor command
+    monitor_parser = subparsers.add_parser(
+        'monitor',
+        help='Run real-time geopolitical intelligence ticker'
+    )
+    monitor_parser.add_argument(
+        '--interval',
+        type=int,
+        default=30,
+        help='Update interval in minutes (default: 30)'
+    )
+    monitor_parser.add_argument(
+        '--output',
+        help='Output directory for insights (default: ./ticker_output)'
+    )
+    monitor_parser.add_argument(
+        '--no-ai',
+        action='store_true',
+        help='Disable GeoBot 2.0 AI analysis'
+    )
+    monitor_parser.add_argument(
+        '--test',
+        action='store_true',
+        help='Run single update and exit (test mode)'
+    )
+    monitor_parser.set_defaults(func=cmd_monitor)
 
     # Version command
     version_parser = subparsers.add_parser(
