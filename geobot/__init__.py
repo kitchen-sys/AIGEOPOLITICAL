@@ -26,6 +26,8 @@ from . import analysis
 # New modules in v2.0
 from . import bayes
 from . import causal
+from . import monitoring
+from . import discord_bot
 
 __all__ = [
     "core",
@@ -40,4 +42,6 @@ __all__ = [
     "analysis",
     "bayes",
     "causal",
+    "monitoring",
+    "discord_bot",
 ]
